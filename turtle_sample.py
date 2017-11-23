@@ -1,21 +1,16 @@
 import turtle
 import time
+import random
 
 t = turtle
 
-i = 30
-flag = False
+size = 10
+disp = 10
+i = 0
 
 while True:
-	t.forward(80)
-	if flag:
-		t.left(i)
-		flag = False
-	else:
-		t.right(i)
-		flag = True
-	i = (i + 30) % 360
-
-
-
-time.sleep(5) 
+	t.forward(disp)
+	t.left(60)
+	if i == 2:
+		disp += 10
+	i = (i + 1) % 3
