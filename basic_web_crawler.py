@@ -1,10 +1,20 @@
+
+'''
+
+	NOTE: Use this at your own disclosure.
+
+	I do not bear anything.
+
+
+'''
+
 import requests
 from bs4 import BeautifulSoup as webcrawl
 
 def getStaus(name):
 	url = "https://www.quora.com/profile/" + name
 	print(url)
-	
+
 	try:
 		# Put appropriate headers here later
 		headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
