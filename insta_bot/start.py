@@ -1,7 +1,7 @@
 '''
 	@file: start.py
 
-	@desc: A bot which likes, comments and saves
+	@desc: A bot which likes and saves
 	photos on instagram!
 
 	@author Aditya Ch (https://github.com/aditya-code-blooded)
