@@ -116,3 +116,24 @@ def findArticleClassName(webPageData):
 	articleClassString = webPageData[offset1:offset1 + 50]
 
 	return parseClassName(articleClassString)
+
+# Finds the "Watch All" stories button on the webpage and returns it
+def findStoriesButton(webPageData):
+
+	offset1 = webPageData.rfind("Watch All")
+	possibleArea = webPageData[offset1 - 30:offset1 + 30]
+
+	offset2 = findOffsetAfter('class="', possibleArea)
+	classNameString = possibleArea[offset2:offset2 + 15]
+
+	return parseClassName(classNameString)
+
+# Returns true if the input string contains spaces
+def containsSpaces(string):
+
+	for char in string:
+		if char == ' ':
+			return True
+
+	return False
+

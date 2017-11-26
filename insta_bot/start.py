@@ -2,7 +2,7 @@
 	@file: start.py
 
 	@desc: A bot which likes and saves
-	photos on instagram!
+	photos on instagram! It also watches stories.
 
 	@author Aditya Ch (https://github.com/aditya-code-blooded)
 
@@ -10,9 +10,12 @@
 
 import sys
 import selenium.webdriver as webdriver
+from selenium.webdriver.common.keys import Keys  
+from selenium.webdriver.chrome.options import Options
 import login as auth
 import utils
 import bot
+import os
 
 def main():
 
@@ -28,12 +31,30 @@ def main():
 	# Go to the instagram page using Selenium
 	url = "https://www.instagram.com/"
 
-	driver = webdriver.Chrome()
+	# Start Chrome in headless state
+	chrome_options = Options()
+	chrome_options.add_argument("--headless")
+	driver = webdriver.Chrome(chrome_options=chrome_options)
+
+	'''
+		Note: You cannot watch Instagram stories when you
+		open the browser in headless state.
+
+		If you want to open chrome browser without the
+		headless state and watch instagram stories, then
+		comment out the above 3 lines and uncomment
+		the below line:
+
+		driver = webdriver.Chrome()
+
+	'''
 
 	# Login to instagram
+	utils.logMessage("Bot is logging into Instagram")
 	homePageData = auth.login(url, driver)
+	utils.logMessage("Bot is successfully logged into Instagram")
 
-	# Run the bot to like photos
+	# Run the bot
 	bot.runBot(homePageData, driver)
 
 '''

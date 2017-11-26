@@ -14,7 +14,6 @@ import constants as CONSTANTS
 import parser
 import utils
 
-
 # Determines whether we should like the photo or not
 def shouldlikePhoto(photoContainer):
 
@@ -71,11 +70,11 @@ def interactWithPhotos(driver, articleClassSelector, interactionsTillNow, blackL
 		shouldArchive = shouldArchiveThePhoto(photoContainer, usernameOfPhoto, archiveUsers)
 
 		if shouldLike:
-			#likeButtons[i].click()
+			likeButtons[i].click()
 			utils.logMessage("Liked photo of user: " + usernameOfPhoto)
 
 		if shouldArchive:
-			#archiveButtons[i].click()
+			archiveButtons[i].click()
 			utils.logMessage("Saved photo of user: " + usernameOfPhoto)
 
 		interactionCount = interactionCount + 1
@@ -83,7 +82,19 @@ def interactWithPhotos(driver, articleClassSelector, interactionsTillNow, blackL
 
 	return interactionCount
 
-# Driver function for interactWithPhotos() (See README for understanding this)
+# Watches stories
+def watchStories(driver):
+
+	pageData = driver.find_element_by_tag_name("body").get_attribute('innerHTML')
+	storiesButtonClass = parser.findStoriesButton(str(webcrawl(pageData, "html.parser")))
+
+	if parser.containsSpaces(storiesButtonClass):
+		storiesButtonClassSelector = parser.concatenate2(storiesButtonClass)
+		driver.find_elements_by_css_selector(storiesButtonClassSelector).click()
+	else:
+		driver.find_element_by_class_name(storiesButtonClass).click()
+
+# Driver function for interactWithPhotos() and watchStories() (See README for understanding this)
 def runBot(webPageData, driver):
 
 	# Each image is wrapped with <article> (Get its class)
@@ -127,6 +138,13 @@ def runBot(webPageData, driver):
 			driver.execute_script(scrollJSScript)
 			# Wait for the page to load
 			time.sleep(3 * CONSTANTS.WAIT_TIME)
+
+	# Watch the stories now
+	utils.logMessage("Started watching stories")
+	watchStories(driver)
+	time.sleep(10 * CONSTANTS.WAIT_TIME)
+	utils.logMessage("Stopped watching stories")
+
 
 
 
