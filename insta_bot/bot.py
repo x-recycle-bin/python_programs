@@ -7,13 +7,23 @@
 
 import time
 import re
+import os.path
 from bs4 import BeautifulSoup as webcrawl
 import constants as CONSTANTS
 import parser
 import utils
 
+def getBlackListedUsers():
+
+	with open(CONSTANTS.BLACK_LIST_FILE) as f:
+		content = f.readlines()
+
+	# remove whitespace characters like `\n` at the end of each line
+	content = [x.strip() for x in content]
+	return content
+
 # Likes photos on the given page
-def likePhotos(driver, articleClassSelector, photosLikedTillNow):
+def likePhotos(driver, articleClassSelector, photosLikedTillNow, blackListedUsers):
 
 	likeCount = 0
 
@@ -31,9 +41,14 @@ def likePhotos(driver, articleClassSelector, photosLikedTillNow):
 		photoContainer = photolist[i].get_attribute('innerHTML')
 		usernameOfPhoto = str(webcrawl(photoContainer, "html.parser").header.contents[1].contents[0].contents[0].contents[0].contents[0])
 
+		# Don't interact with black listed users
+		if usernameOfPhoto in blackListedUsers:
+			utils.logMessage("User: " + usernameOfPhoto + " is blacklisted")
+			continue
+
 		# Find whether we have already liked the photo or not
 		likeStatusContent = str(webcrawl(photoContainer, "html.parser").contents[2].contents[0].contents[0])
-		if bool(re.search(CONSTANTS.RED_LIKE_BUTTON_CLASS, likeStatusContent)):
+		if bool(re.search(CONSTANTS.WHITE_LIKE_BUTTON_CLASS, likeStatusContent)):
 			liked = False
 		else:
 			liked = True
@@ -44,7 +59,7 @@ def likePhotos(driver, articleClassSelector, photosLikedTillNow):
 			if (photosLikedTillNow + likeCount) == CONSTANTS.MAX_PHOTO_LIKES:
 				break
 			else:
-				likeButtons[i].click()
+				# likeButtons[i].click()
 				likeCount = likeCount + 1
 				utils.logOperation(usernameOfPhoto, likeCount + photosLikedTillNow)
 
@@ -54,7 +69,7 @@ def likePhotos(driver, articleClassSelector, photosLikedTillNow):
 def runBot(webPageData, driver):
 
 	# Each image is wrapped with <article> (Get its class)
-	articleClassName = findArticleClassName(webPageData)
+	articleClassName = parser.findArticleClassName(webPageData)
 	articleClassSelector = parser.concatenate1(articleClassName)
 
 	'''
@@ -66,13 +81,19 @@ def runBot(webPageData, driver):
 	scrollJSScript = "var elem = document.getElementsByClassName('" + articleClassName + "')[0];" + \
 						"window.scrollBy(0, elem.scrollHeight);"
 
+	# Get the users whom you don't want to interact with
+	blackListedUsers = []
+	blackListFileExists = os.path.isfile(CONSTANTS.BLACK_LIST_FILE)
+	if blackListFileExists:
+		blackListedUsers = getBlackListedUsers()
+
 	# At max, likes top k unliked-photos (where k = CONSTANTS.MAX_PHOTO_LIKES)
 	photosLiked = 0
 
 	# Scroll only 100 times at max
-	for iterations in range(0,100)
+	for iterations in range(0,100):
 
-		likeCount = likePhotos(driver, articleClassSelector, photosLiked)
+		likeCount = likePhotos(driver, articleClassSelector, photosLiked, blackListedUsers)
 
 		photosLiked = photosLiked + likeCount
 		if photosLiked == CONSTANTS.MAX_PHOTO_LIKES:

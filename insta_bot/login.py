@@ -52,7 +52,7 @@ def openLoginPage(driver, url):
 	signUpPageSrc = driver.page_source
 	signUpPageData = str(webcrawl(signUpPageSrc, "html.parser"))
 
-	loginButton = findLoginButton(signUpPageData)
+	loginButton = parser.findLoginButton(signUpPageData)
 	driver.find_element_by_class_name(loginButton).click()
 	# Wait for the page to load
 	time.sleep(CONSTANTS.WAIT_TIME)
@@ -69,7 +69,7 @@ def login(url, driver):
 	loginPageData = openLoginPage(driver, url)
 
 	# Find the submit button on login page
-	submitClassName = findSubmitButton(loginPageData)
+	submitClassName = parser.findSubmitButton(loginPageData)
 	submitClassName = parser.concatenate1(submitClassName)
 
 	# Find username and password

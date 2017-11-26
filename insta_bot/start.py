@@ -14,6 +14,7 @@ import sys
 import selenium.webdriver as webdriver
 import login as auth
 import utils
+import bot
 
 def main():
 
@@ -35,7 +36,7 @@ def main():
 	homePageData = auth.login(url, driver)
 
 	# Run the bot to like photos
-	runBot(homePageData, driver)
+	bot.runBot(homePageData, driver)
 
 '''
 	Invoke this program as:
