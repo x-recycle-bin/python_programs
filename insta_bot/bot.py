@@ -32,12 +32,13 @@ def shouldArchiveThePhoto(photoContainer, usernameOfPhoto, archiveUsers):
 		return False
 
 # Interacts with photos on the given page
-def interactWithPhotos(driver, articleClassSelector, interactionsTillNow, blackListedUsers, archiveUsers):
+def interactWithPhotos(driver, interactionsTillNow, blackListedUsers, archiveUsers):
 
 	interactionCount = 0
 
 	# Find all photos in the current page
-	photolist = driver.find_elements_by_css_selector(articleClassSelector)
+	# photolist = driver.find_elements_by_css_selector(articleClassSelector)
+	photolist = driver.find_elements_by_tag_name("article")
 
 	# Find like and archive button classes
 	optionList = webcrawl(photolist[0].get_attribute('innerHTML'), "html.parser").contents[2].contents[0].findAll("a")
@@ -77,8 +78,10 @@ def interactWithPhotos(driver, articleClassSelector, interactionsTillNow, blackL
 			archiveButtons[i].click()
 			utils.logMessage("Saved photo of user: " + usernameOfPhoto)
 
-		interactionCount = interactionCount + 1
-		utils.logMessage("Interaction Count: " + str(interactionCount + interactionsTillNow))
+		# Increment only if you have interacted with the photo in some way
+		if shouldLike or shouldArchive:
+			interactionCount = interactionCount + 1
+			utils.logMessage("Interaction Count: " + str(interactionCount + interactionsTillNow))
 
 	return interactionCount
 
@@ -98,8 +101,7 @@ def watchStories(driver):
 def runBot(webPageData, driver):
 
 	# Each image is wrapped with <article> (Get its class)
-	articleClassName = parser.findArticleClassName(webPageData)
-	articleClassSelector = parser.concatenate1(articleClassName)
+	scrollHeight = driver.find_elements_by_tag_name("article")[0].get_attribute("scrollHeight")
 
 	'''
 		For achieving the scrolling effect (so that new images
@@ -107,8 +109,7 @@ def runBot(webPageData, driver):
 		selenium
 
 	'''
-	scrollJSScript = "var elem = document.getElementsByClassName('" + articleClassName + "')[0];" + \
-						"console.log(elem.scrollHeight); window.scrollBy(0, elem.scrollHeight);"
+	scrollJSScript = "window.scrollBy(0, " + scrollHeight + ");"
 
 	# Get the users whom you don't want to interact with
 	blackListedUsers = []
@@ -127,9 +128,7 @@ def runBot(webPageData, driver):
 	# Scroll only 100 times at max
 	for iterations in range(0,100):
 
-		interactionCount = interactWithPhotos(driver, articleClassSelector, \
-										totalInteractionCount, blackListedUsers, \
-										archiveUsers)
+		interactionCount = interactWithPhotos(driver, totalInteractionCount, blackListedUsers, archiveUsers)
 		totalInteractionCount = totalInteractionCount + interactionCount
 		if totalInteractionCount == CONSTANTS.MAX_INTERACTIONS:
 			break

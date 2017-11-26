@@ -10,8 +10,6 @@
 
 import sys
 import selenium.webdriver as webdriver
-from selenium.webdriver.common.keys import Keys  
-from selenium.webdriver.chrome.options import Options
 import login as auth
 import utils
 import bot
@@ -32,9 +30,9 @@ def main():
 	url = "https://www.instagram.com/"
 
 	# Start Chrome in headless state
-	chrome_options = Options()
-	chrome_options.add_argument("--headless")
-	driver = webdriver.Chrome(chrome_options=chrome_options)
+	#chrome_options = webdriver.chrome.options.Options()
+	#chrome_options.add_argument("--headless")
+	#driver = webdriver.Chrome(chrome_options=chrome_options)
 
 	'''
 		Note: You cannot watch Instagram stories when you
@@ -45,9 +43,8 @@ def main():
 		comment out the above 3 lines and uncomment
 		the below line:
 
-		driver = webdriver.Chrome()
-
 	'''
+	driver = webdriver.Chrome()
 
 	# Login to instagram
 	utils.logMessage("Bot is logging into Instagram")

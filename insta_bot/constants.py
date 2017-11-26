@@ -6,7 +6,7 @@
 '''
 
 WAIT_TIME = 3
-MAX_INTERACTIONS = 30
+MAX_INTERACTIONS = 10
 LOG_FILE = "./logs.txt"
 BLACK_LIST_FILE = "./blackList.txt"
 ARCHIVE_LIST_FILE = "./archiveUsers.txt"
