@@ -30,9 +30,9 @@ def main():
 	url = "https://www.instagram.com/"
 
 	# Start Chrome in headless state
-	#chrome_options = webdriver.chrome.options.Options()
-	#chrome_options.add_argument("--headless")
-	#driver = webdriver.Chrome(chrome_options=chrome_options)
+	chrome_options = webdriver.chrome.options.Options()
+	chrome_options.add_argument("--headless")
+	driver = webdriver.Chrome(chrome_options=chrome_options)
 
 	'''
 		Note: You cannot watch Instagram stories when you
@@ -44,7 +44,7 @@ def main():
 		the below line:
 
 	'''
-	driver = webdriver.Chrome()
+	#river = webdriver.Chrome()
 
 	# Login to instagram
 	utils.logMessage("Bot is logging into Instagram")
