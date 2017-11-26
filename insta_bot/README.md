@@ -1,8 +1,8 @@
 # Insta-Bot
 An Instagram-Bot which has the ability to interact with a given instagram feed. This project was developed to demonstrate my python programming skills. To be more specific: Web-scraping in python and using basic external modules such as Selenium.
-
-<img src="./insta-bot-img.jpeg" width="300" height="200" />
-
+<br>
+<img src="./insta-bot-img.jpeg" width="300" height="200" align="middle" style="display: block;" />
+<br>
 <h2>Features</h2>
 <ul>
   <li>Auto-Likes photos</li>
