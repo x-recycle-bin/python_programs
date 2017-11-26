@@ -1,12 +1,10 @@
 '''
 	@file: start.py
 
-	@desc: A bot which likes photos on instagram!
+	@desc: A bot which likes, comments and saves
+	photos on instagram!
 
-	This project is developed by one-and-only
-	-Aditya Ch
-
-	https://github.com/aditya-code-blooded
+	@author Aditya Ch (https://github.com/aditya-code-blooded)
 
 '''
 
@@ -58,13 +56,15 @@ if __name__ == "__main__":
 	
 		if len(sys.argv) != 2:
 			errorString = "Error (Missing arguments): Usage is\npython start.py /absolute/path/to/credentials/file.txt"
-			utils.logError(errorString)
+			utils.logMessage("Error occurred:\n" + errorString)
 			quit()
 
+		utils.logMessage("============== Starting Insta-bot ==============")
 		main()
 
 	except Exception as e:
 		errorString = str(e)
-		utils.logError(errorString)
+		utils.logMessage("Error occurred:\n" + errorString)
 
+	utils.logMessage("============== Insta-bot terminated ==============")
 
