@@ -127,11 +127,24 @@ if __name__ == "__main__":
 
 	# File which contains the HTML content
 	filename = "/Users/adityach/Desktop/abc.html"
+	
+	'''
+		Desired follower count depends on user to user. After
+		how many followers do you consider a question to be
+		'popular' and worthy of writing an answer to?
+
+	'''
 	desiredFollowerCount = 100
 
 	results = parseQuoraQuestionFeed(filename)
-	print(results)
 	recommendedQuestions = getRecommendedQuestions(results, desiredFollowerCount)
+	
+	'''
+		Currently printing to console. You can redirect it to file or some
+		other program of your choice
+		
+	'''
+
 	print("You can answer the following questions: \n")
 	print(recommendedQuestions)
 
